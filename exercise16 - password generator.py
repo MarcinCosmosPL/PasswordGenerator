@@ -1,13 +1,21 @@
 #https://www.practicepython.org/exercise/2014/05/28/16-password-generator.html - Where I found the challenge
 
-
 import random
+
+#defining the strings of required character types - you can define new - and then add it to allCharsList - and everything should work fine
 ascii_lowercase = 'abcdefghijklmnopqrstuvwxyz'
 ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 digits = '0123456789'
-allChars = ascii_lowercase+ascii_uppercase+digits
+specials = "@"   ####To test adding a new list
+allCharsList = [ascii_lowercase, ascii_uppercase, digits, specials] #important list of required character types
+allChars = "" #lists combined- generates by the loop below:
+for i in allCharsList:
+    allChars+=i
 listOfStupidPasswords = ["dupaDupadupa", "Admin1", "password", "p", "beer"]
-minimalChars = 5 ## Change if you like, but do not make it shorter than number of lists of characters or you will create an infinite LOOP!!!!
+minimalChars = 5 ## Change if you like, but you cannot make it shorter than number of lists of characters - it would create an infinite LOOP!!!!
+
+
+assert minimalChars >= len(allCharsList), "minmal number of characters in password must be bigger than number of list of required character types"
 
 def charChecker(Password, *Charlists):  #Check if the password contains at least one element of given Charlists
     for charlist in Charlists:
@@ -18,16 +26,6 @@ def charChecker(Password, *Charlists):  #Check if the password contains at least
     else:
         return True
 
-## TESTING charChecker
-    
-##Pass1 = "Piwo07" #Uppercase, lowercase and number - should be True
-##Pass2 = "piwo07" #Only lowercase and number - should be False
-##Pass3 = "piwo"  #Only lowercase - should be False
-##
-##Testlist = [Pass1, Pass2, Pass3]
-##
-##for i in Testlist:
-##    print(charChecker(i, ascii_lowercase, ascii_uppercase, digits))
 
 
 def PassGenerate(numberOfchars=10, easyMode=False): #generates the password, needs random and charCecker
@@ -41,19 +39,11 @@ def PassGenerate(numberOfchars=10, easyMode=False): #generates the password, nee
         while newPass == '':
             for i in range(numberOfchars):
                 newChar = random.choice(allChars)
-                newPass+=newChar       
-            if charChecker(newPass, ascii_lowercase, ascii_uppercase, digits): #we can add some new lists of characters here to make it even more difficult
-                return newPass
+                newPass+=newChar
+            if charChecker(newPass, *allCharsList):
+                    return newPass
             else:
                 newPass = ''
-
-
-### TESTING PassGenerate
-#for i in range(10):
-#    print("Test pass nr. {} is: {}".format(i, PassGenerate()))
-
-#print("Password lesser than 5 test: ", PassGenerate(4))
-#print("Stupid password: ", PassGenerate(4, True))
 
     
 ### TIME TO ASK THE USER
@@ -82,11 +72,6 @@ while True:
 print("Your password is: \n", UserPassword)
 
 
-
-
-
-
-    
 
 
 
